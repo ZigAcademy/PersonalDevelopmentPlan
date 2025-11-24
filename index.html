@@ -1,0 +1,300 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal Development Plan</title>
+
+<!-- Safiro font -->
+<style>
+@font-face {
+    font-family: 'Safiro';
+    src: url('Safiro-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Safiro';
+    src: url('Safiro-Bold.otf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Safiro', sans-serif;
+    background-color: #EDF3F9;
+    color: #0000D0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 20px;
+    position: relative;
+    min-height: 100vh;
+}
+
+.form-page {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.form-page.active {
+    display: flex;
+}
+
+.question {
+    margin: 20px 0 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #1F59FF;
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    margin-bottom: 20px;
+    border: 2px solid #1F59FF;
+    border-radius: 8px;
+    padding: 10px;
+    resize: none;
+    font-family: 'Safiro', sans-serif;
+    font-size: 16px;
+    background-color: #F9FAFB;
+}
+
+button {
+    margin: 10px;
+    padding: 12px 24px;
+    background-color: #00D0FF;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #1F59FF;
+}
+
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 800px;
+}
+
+.navigation .next {
+    margin-left: auto;
+}
+
+.summary {
+    text-align: left;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 20px;
+}
+
+h3 {
+    color: #1F59FF;
+}
+
+h4 {
+    color: #1F59FF;
+}
+
+.copyright {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    font-size: 14px;
+    color: #1F59FF;
+}
+</style>
+</head>
+<body>
+
+<!-- Page 1 -->
+<div id="page1" class="form-page active">
+    <div class="question">1. What would I like to develop?</div>
+    <textarea placeholder="Your answer..."></textarea>
+    <div class="question">2. What is my responsibility?</div>
+    <textarea placeholder="Your answer..."></textarea>
+    <div class="question">3. What gives me energy?</div>
+    <textarea placeholder="Your answer..."></textarea>
+    <div class="question">4. How will I make a difference?</div>
+    <textarea placeholder="Your answer..."></textarea>
+    <div class="navigation">
+        <button onclick="nextPage()" class="next">Next</button>
+    </div>
+</div>
+
+<!-- Page 2 -->
+<div id="page2" class="form-page">
+    <div class="question">What can I develop?</div>
+    <div class="question">1. Knowledge</div>
+    <textarea placeholder="Your answer..."></textarea>
+    <div class="question">2. Network</div>
+    <textarea placeholder="Your answer..."></textarea>
+    <div class="question">3. Talents</div>
+    <textarea placeholder="Your answer..."></textarea>
+    <div class="navigation">
+        <button onclick="previousPage()">Previous</button>
+        <button onclick="nextPage()" class="next">Next</button>
+    </div>
+</div>
+
+<!-- Page 3 -->
+<div id="page3" class="form-page">
+    <div class="question">Make your goal SMART:</div>
+    <div class="question">1. Specific</div>
+    <textarea placeholder="Your answer..."></textarea>
+    <div class="question">2. Measurable</div>
+    <textarea placeholder="Your answer..."></textarea>
+    <div class="question">3. Acceptable</div>
+    <textarea placeholder="Your answer..."></textarea>
+    <div class="question">4. Realistic</div>
+    <textarea placeholder="Your answer..."></textarea>
+    <div class="question">5. Time</div>
+    <textarea placeholder="Your answer..."></textarea>
+    <div class="question" style="color: #00D0FF;">My goal is:</div>
+    <textarea placeholder="Summarize your SMART goal..."></textarea>
+    <button onclick="addNewGoal()">Add Another SMART Goal</button>
+    <div class="navigation">
+        <button onclick="previousPage()">Previous</button>
+        <button onclick="nextPage()" class="next">Next</button>
+    </div>
+</div>
+
+<!-- Page 4 -->
+<div id="page4" class="form-page">
+    <div class="summary" id="summary"></div>
+    <div class="navigation">
+        <button onclick="previousPage()">Previous</button>
+        <button onclick="printSummary()" id="printBtn">Print to PDF</button>
+    </div>
+</div>
+
+<!-- Copyright -->
+<div class="copyright">&copy; Tim Vos</div>
+
+<!-- Toolbox knop -->
+<a href="https://dutchfurtive.github.io/Toolbox/" target="_blank">
+    <button style="position: absolute; bottom: 20px; left: 20px; background-color: #00D0FF; color: white; font-size: 14px; padding: 8px 16px; border: none; border-radius: 5px; cursor: pointer;">
+        Go to Toolbox
+    </button>
+</a>
+
+<script>
+let currentPage = 1;
+
+function showPage(pageNumber) {
+    document.querySelectorAll('.form-page').forEach((page, index) => {
+        page.classList.toggle('active', index === pageNumber - 1);
+    });
+}
+
+function nextPage() {
+    const pages = document.querySelectorAll('.form-page');
+    if (currentPage < pages.length) {
+        currentPage++;
+        if (currentPage === pages.length) generateSummary();
+        showPage(currentPage);
+    }
+}
+
+function previousPage() {
+    if (currentPage > 1) {
+        currentPage--;
+        showPage(currentPage);
+    }
+}
+
+function addNewGoal() {
+    const newPage = document.createElement('div');
+    newPage.classList.add('form-page');
+    newPage.innerHTML = `
+        <div class="question">Make your goal SMART:</div>
+        <div class="question">1. Specific</div>
+        <textarea placeholder="Your answer..."></textarea>
+        <div class="question">2. Measurable</div>
+        <textarea placeholder="Your answer..."></textarea>
+        <div class="question">3. Acceptable</div>
+        <textarea placeholder="Your answer..."></textarea>
+        <div class="question">4. Realistic</div>
+        <textarea placeholder="Your answer..."></textarea>
+        <div class="question">5. Time</div>
+        <textarea placeholder="Your answer..."></textarea>
+        <div class="question" style="color: #00D0FF;">My goal is:</div>
+        <textarea placeholder="Summarize your SMART goal..."></textarea>
+        <button onclick="addNewGoal()">Add Another SMART Goal</button>
+        <div class="navigation">
+            <button onclick="previousPage()">Previous</button>
+            <button onclick="nextPage()" class="next">Next</button>
+        </div>
+    `;
+    document.body.insertBefore(newPage, document.getElementById('page4'));
+    currentPage++;
+    showPage(currentPage);
+}
+
+function generateSummary() {
+    const allAnswers = document.querySelectorAll('textarea');
+    let summaryHtml = `
+        <h3 style="color:#1F59FF;">Summary of Your Personal Development Plan</h3>
+        <h4>What would you like to develop?</h4>
+        <p>${allAnswers[0].value}</p>
+        <h4>What is your responsibility?</h4>
+        <p>${allAnswers[1].value}</p>
+        <h4>What gives you energy?</h4>
+        <p>${allAnswers[2].value}</p>
+        <h4>How will you make a difference?</h4>
+        <p>${allAnswers[3].value}</p>
+        <h4>What can you develop?</h4>
+        <h5>Knowledge</h5>
+        <p>${allAnswers[4].value}</p>
+        <h5>Network</h5>
+        <p>${allAnswers[5].value}</p>
+        <h5>Talents</h5>
+        <p>${allAnswers[6].value}</p>
+        <h4>SMART Goals</h4>
+    `;
+
+    let goalIndex = 7;
+    let smartGoalNumber = 1;
+
+    while (goalIndex < allAnswers.length) {
+        summaryHtml += `
+            <h5>SMART Goal ${smartGoalNumber}</h5>
+            <p><strong>Specific:</strong> ${allAnswers[goalIndex].value}</p>
+            <p><strong>Measurable:</strong> ${allAnswers[goalIndex + 1].value}</p>
+            <p><strong>Acceptable:</strong> ${allAnswers[goalIndex + 2].value}</p>
+            <p><strong>Realistic:</strong> ${allAnswers[goalIndex + 3].value}</p>
+            <p><strong>Time:</strong> ${allAnswers[goalIndex + 4].value}</p>
+            <p><strong style="color:#00D0FF;">My goal is:</strong> ${allAnswers[goalIndex + 5].value}</p>
+            <hr>
+        `;
+        goalIndex += 6;
+        smartGoalNumber++;
+    }
+
+    document.getElementById('summary').innerHTML = summaryHtml;
+}
+
+function printSummary() {
+    window.print();
+}
+</script>
+</body>
+</html>
